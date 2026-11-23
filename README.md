@@ -109,14 +109,28 @@ Pré-requisitos: **Python 3.12 ou superior** (o roteiro usa 3.14) e **Git**.
 
 ### Opção A: PyCharm (como no roteiro)
 
-1. *File → Project from Version Control* e informe a URL do repositório:
-   `https://github.com/DEVBORGES1/Sistema-Distribuido.git`
-2. Crie/selecione um interpretador com ambiente virtual (`.venv`).
-3. Abra o terminal embutido (`Alt + F12`) e instale as dependências:
+1. Na tela inicial do PyCharm, clique em **Clone Repository** (ou, com um projeto aberto,
+   **File → Project from Version Control...**).
+2. Em **URL**, cole `https://github.com/DEVBORGES1/Sistema-Distribuido.git`, escolha a pasta
+   (ex.: `C:\programas\ad-2026\Sistema-Distribuido`) e clique em **Clone**. Confirme **Trust Project**.
+3. Configure o ambiente virtual:
+   - **File → Settings → Project: Sistema-Distribuido → Python Interpreter**
+   - **Add Interpreter → Add Local Interpreter... → Virtualenv Environment → New**
+   - Local: pasta `.venv` dentro do projeto; Base interpreter: Python 3.12 ou superior (o roteiro usa 3.14)
+   - Clique em **OK**. O canto inferior direito do PyCharm deve mostrar `.venv [3.x]`.
+
+   > Se o PyCharm mostrar o aviso *"Install requirements from requirements.txt"*, pode clicar em
+   > **Install** e pular o passo 4.
+4. Abra o terminal embutido (`Alt + F12` ou **View → Tool Windows → Terminal**). O prompt deve
+   começar com `(.venv)`. Instale as dependências:
 
    ```bash
    pip install -r requirements.txt
    ```
+
+   > Se o prompt não mostrar `(.venv)`, feche e abra o terminal de novo, ou ative manualmente
+   > com `.venv\Scripts\Activate.ps1`. Se o PowerShell bloquear o script, rode antes
+   > `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
 
 ### Opção B: terminal
 
@@ -139,7 +153,49 @@ pip install -r requirements.txt
 
 ## Como rodar
 
-São dois processos, cada um em um terminal (no PyCharm, abra duas abas do terminal embutido).
+São dois processos que precisam ficar rodando **ao mesmo tempo**, cada um em seu terminal:
+primeiro o backend, depois o frontend.
+
+### Rodando no PyCharm (passo a passo)
+
+1. Abra o terminal embutido (`Alt + F12`). Essa é a aba **Local**.
+2. Na aba **Local**, inicie o **backend**:
+
+   ```bash
+   uvicorn backend_fastapi:app --reload
+   ```
+
+   Espere aparecer `Application startup complete.` e `Uvicorn running on http://127.0.0.1:8000`.
+   **Não feche esta aba**: a API precisa continuar rodando.
+3. Clique no **`+`** ao lado da aba **Local** para abrir uma segunda aba, **Local (2)**. Ela também
+   deve mostrar `(.venv)` no prompt.
+4. Na aba **Local (2)**, inicie o **frontend**:
+
+   ```bash
+   streamlit run frontend_streamlit.py
+   ```
+
+   O navegador abre sozinho em <http://localhost:8501>. Se não abrir, clique no link
+   `Local URL` que aparece no terminal.
+5. Na barra lateral do painel deve aparecer **🟢 API online**. Faça login com `admin` / `admin123`
+   (ver [Login](#login)).
+6. Para encerrar, clique em cada aba do terminal e pressione `Ctrl + C`.
+
+> **Dica:** com o `--reload`, o backend reinicia sozinho quando `backend_fastapi.py` é salvo.
+> O Streamlit também detecta alterações e oferece **Rerun** no canto superior direito da página.
+
+**Problemas comuns no PyCharm**
+
+| Sintoma | Solução |
+|---------|---------|
+| `uvicorn` / `streamlit` não é reconhecido como comando | O terminal não está com o `.venv` ativo. Verifique o interpretador (passo 3 da instalação) e reabra o terminal. |
+| Painel mostra **🔴 API indisponível** | O backend não está rodando na aba **Local**. Inicie-o antes do frontend. |
+| `[Errno 10048]` / porta 8000 em uso | Já existe outro backend aberto (ex.: o do roteiro). Feche-o com `Ctrl + C`. |
+| Erro de banco depois de alterar o código | Pare o backend, apague `biblioteca.db` e rode de novo. |
+
+### Rodando em outro terminal (sem PyCharm)
+
+Com o ambiente virtual ativo, use dois terminais:
 
 **Terminal 1: backend (API FastAPI)**
 
