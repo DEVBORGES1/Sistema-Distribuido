@@ -242,8 +242,13 @@ restrições de permissão (o botão **Excluir** e a seção **Auditoria** não 
 ├── backend_fastapi.py      # API REST (FastAPI + SQLModel + SQLite + OAuth2/JWT)
 ├── frontend_streamlit.py   # Interface web (Streamlit)
 ├── requirements.txt        # Dependências
-├── docs/                   # Capturas de tela
+├── docs/
+│   ├── apresentacao.pdf    # Slides da apresentação (diferenças em relação ao roteiro)
+│   ├── painel.png          # Captura de tela do painel
+│   └── login.png           # Captura de tela do login
 └── README.md
 ```
+
+Os slides da apresentação estão em [`docs/apresentacao.pdf`](docs/apresentacao.pdf).
 
 ![Tela de login](docs/login.png)
