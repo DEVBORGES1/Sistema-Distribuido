@@ -1,0 +1,15 @@
+# Ambiente virtual e caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Banco de dados SQLite gerado na execução
+*.db
+
+# IDE
+.idea/
+.vscode/
+
+# Variáveis de ambiente
+.env
